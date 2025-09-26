@@ -1,36 +1,34 @@
 'use client'
 import { Keypair } from "@solana/web3.js";
+import { generateMnemonic ,mnemonicToSeedSync} from "bip39";
+import { derivePath } from "ed25519-hd-key";
 import nacl from "tweetnacl";
 
 async function key(){
-  // Generate a new keypair
-const keypair = Keypair.generate();
 
-// Extract the public and private keys
-const publicKey = keypair.publicKey.toString();
-const secretKey = keypair.secretKey;
+// Generate a 12-word mnemonic
 
-// Display the keys
-console.log("Public Key:", publicKey);
-console.log("Private Key (Secret Key):", secretKey);
+const mnemonic = generateMnemonic();
 
-// Convert the message "hello world" to a Uint8Array
-const message = new TextEncoder().encode("hello world");
+console.log('Generated Mnemonic:', mnemonic);
 
-const signature = nacl.sign.detached(message, secretKey);
-const result = nacl.sign.detached.verify(
-  message,
-  signature,
-  keypair.publicKey.toBytes(),
-);
+const seed = mnemonicToSeedSync(mnemonic);
 
-console.log(result);
+for (let i = 0; i < 4; i++) {
+  const path = `m/44'/501'/${i}'/0'`; // This is the derivation path
+  const derivedSeed = derivePath(path, seed.toString("hex")).key;
+  const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;
+  console.log("Private key",secret);
+  
+  console.log(Keypair.fromSecretKey(secret).publicKey.toBase58());
+}
+
 
 }
 export default function Home() {
   return (
     <>
-    <button onClick={key}>Generate Keys</button>
+    <button onClick={key} className="p-3">Generate Keys</button>
     </>
   );
 }
