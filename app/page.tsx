@@ -56,14 +56,14 @@ export default function Home() {
             <Badge variant="outline" className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums align-text-top" >v1.3</Badge>
           </div>
           <div>
-            <Switch className="m-6 mr-36 " />
+           
           </div>
         </div>
         <div className="flex flex-col items-center align-center mt-5">
           <div className="flex flex-row items-center gap-2 align-center">
             <textarea
               placeholder="Enter your seed phrase"
-              className="w-xl min-w-fit h-20 border-black border-2 rounded-xl text-2xl  placeholder:p-6  "
+              className="w-xl min-w-fit h-20 border-black overflow-hidden border-2 rounded-xl text-2xl  placeholder:p-6  "
               value={seedPhrase}
               onChange={e => setSeedPhrase(e.target.value)}
             />
@@ -105,6 +105,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <footer className="w-full text-center py-4 mt-10 border-t border-gray-300 text-gray-600 text-sm">
+        designed and developed by Akshat
+      </footer>
     </>
   );
 }
